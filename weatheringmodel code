@@ -1,0 +1,54 @@
+import java.io.*;
+import java.util.Scanner;
+
+public class QuadraticSolver {
+
+    public static String quadraticSolution(double a, double b, double c) {
+        double discriminant = b * b - 4 * a * c;
+        if (discriminant < 0) {
+            return "No real roots";
+        }
+        double root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+        double root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+        return "Roots: " + root1 + ", " + root2;
+    }
+
+    public static void readCoefficients(String filename) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] tokens = line.trim().split("\\s+");
+                if (tokens.length != 3) {
+                    System.out.println("Invalid line: " + line);
+                    continue;
+                }
+                double a = Double.parseDouble(tokens[0]);
+                double b = Double.parseDouble(tokens[1]);
+                double c = Double.parseDouble(tokens[2]);
+                String result = quadraticSolution(a, b, c);
+                System.out.println("Coefficients: a=" + a + ", b=" + b + ", c=" + c + " => " + result);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        // Read from file
+        readCoefficients("input.txt");
+
+        // Take input from user
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter coefficient a: ");
+        double a = scanner.nextDouble();
+        System.out.print("Enter coefficient b: ");
+        double b = scanner.nextDouble();
+        System.out.print("Enter coefficient c: ");
+        double c = scanner.nextDouble();
+
+        String result = quadraticSolution(a, b, c);
+        System.out.println(result);
+
+        scanner.close();
+    }
+}
